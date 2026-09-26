@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'screens/register_screen.dart';
+import 'screens/forgot_password_screen.dart';
+import 'screens/products_screen.dart';
+import 'screens/billing_screen.dart';
 
 void main() {
   runApp(const BusinessPilotApp());
@@ -228,8 +232,29 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 15),
 
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ForgotPasswordScreen(),
+                  ),
+                );
+              },
               child: const Text('Forgot Password?'),
+            ),
+
+            const SizedBox(height: 8),
+
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const RegisterScreen(),
+                  ),
+                );
+              },
+              child: const Text('Create New Account'),
             ),
           ],
         ),
@@ -262,11 +287,27 @@ class BusinessDashboard extends StatelessWidget {
             context,
             'Products',
             Icons.inventory_2,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ProductsScreen(),
+                ),
+              );
+            },
           ),
           _dashboardCard(
             context,
             'Billing',
             Icons.receipt_long,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const BillingScreen(),
+                ),
+              );
+            },
           ),
           _dashboardCard(
             context,
@@ -296,18 +337,20 @@ class BusinessDashboard extends StatelessWidget {
   Widget _dashboardCard(
     BuildContext context,
     String title,
-    IconData icon,
-  ) {
+    IconData icon, {
+    VoidCallback? onTap,
+  }) {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$title module selected'),
-            ),
-          );
-        },
+        onTap: onTap ??
+            () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$title module selected'),
+                ),
+              );
+            },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
