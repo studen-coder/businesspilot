@@ -54,12 +54,13 @@ class WelcomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 17),
               ),
               const SizedBox(height: 45),
+
               FilledButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BusinessTypeScreen(),
+                      builder: (_) => const BusinessTypeScreen(),
                     ),
                   );
                 },
@@ -71,9 +72,18 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 14),
+
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginScreen(),
+                    ),
+                  );
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(15),
                   child: Text(
@@ -107,6 +117,7 @@ class BusinessTypeScreen extends StatelessWidget {
       ('Gym', Icons.fitness_center),
       ('Tutor', Icons.school),
       ('Freelancer', Icons.laptop),
+      ('Service Business', Icons.handyman),
       ('Other Business', Icons.business_center),
     ];
 
@@ -121,23 +132,196 @@ class BusinessTypeScreen extends StatelessWidget {
           final business = businesses[index];
 
           return Card(
+            margin: const EdgeInsets.only(bottom: 10),
             child: ListTile(
-              leading: Icon(business.$2),
-              title: Text(business.$1),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                size: 18,
+              leading: CircleAvatar(
+                child: Icon(business.$2),
               ),
+              title: Text(
+                business.$1,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${business.$1} selected'),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BusinessDashboard(
+                      businessType: business.$1,
+                    ),
                   ),
                 );
               },
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            const Icon(
+              Icons.lock_outline,
+              size: 70,
+            ),
+            const SizedBox(height: 30),
+
+            const TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Email or phone',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            const TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BusinessTypeScreen(),
+                    ),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            TextButton(
+              onPressed: () {},
+              child: const Text('Forgot Password?'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BusinessDashboard extends StatelessWidget {
+  final String businessType;
+
+  const BusinessDashboard({
+    super.key,
+    required this.businessType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(businessType),
+      ),
+      body: GridView.count(
+        padding: const EdgeInsets.all(16),
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        children: [
+          _dashboardCard(
+            context,
+            'Products',
+            Icons.inventory_2,
+          ),
+          _dashboardCard(
+            context,
+            'Billing',
+            Icons.receipt_long,
+          ),
+          _dashboardCard(
+            context,
+            'Customers',
+            Icons.people,
+          ),
+          _dashboardCard(
+            context,
+            'Inventory',
+            Icons.warehouse,
+          ),
+          _dashboardCard(
+            context,
+            'Payments',
+            Icons.payments,
+          ),
+          _dashboardCard(
+            context,
+            'Reports',
+            Icons.analytics,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dashboardCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+  ) {
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$title module selected'),
+            ),
+          );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 42),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
