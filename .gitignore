@@ -46,3 +46,37 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Environment and secret files
+.env
+.env.*
+!.env.example
+
+# Firebase private credentials
+google-services.json
+GoogleService-Info.plist
+firebase-adminsdk-*.json
+service-account*.json
+
+# API/payment/AI secrets
+secrets.json
+secrets.yaml
+*.pem
+*.key
+
+# Environment and secret files
+.env
+.env.*
+!.env.example
+
+# Firebase private credentials
+google-services.json
+GoogleService-Info.plist
+firebase-adminsdk-*.json
+service-account*.json
+
+# API/payment/AI secrets
+secrets.json
+secrets.yaml
+*.pem
+*.key
